@@ -12,6 +12,9 @@ import io
 from src.model import RupeeGuardFusion
 from src.rag_llm import retrieve, generate_report
 
+import os
+from fastapi.staticfiles import StaticFiles
+
 app = FastAPI()
 
 device = torch.device('cpu')
@@ -27,8 +30,15 @@ transform = transforms.Compose([
 
 classes = ['fake', 'genuine']
 
+# Mount frontend assets if the compiled build exists
+if os.path.exists("frontend/dist"):
+    app.mount("/assets", StaticFiles(directory="frontend/dist/assets"), name="assets")
+
 @app.get("/", response_class=HTMLResponse)
 async def home():
+    dist_index = Path("frontend/dist/index.html")
+    if dist_index.exists():
+        return dist_index.read_text(encoding="utf-8")
     return open("app/templates/index.html").read()
 
 @app.post("/predict")

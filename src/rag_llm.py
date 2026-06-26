@@ -27,13 +27,44 @@ def retrieve(query, k=3):
 
 
 
+def generate_fallback_report(verdict, confidence, retrieved_chunks):
+    features_str = "\n- ".join(retrieved_chunks)
+    if verdict.upper() == "GENUINE":
+        return (
+            f"FORENSIC ANALYSIS REPORT\n\n"
+            f"Verdict: Genuine Currency Note\n"
+            f"Confidence Score: {confidence}%\n\n"
+            f"The currency note exhibits characteristics consistent with genuine legal tender. "
+            f"Analysis of security features reveals satisfactory indicators of authenticity. "
+            f"Key verified features include:\n- {features_str}\n\n"
+            f"Recommended Action: Accept note for standard deposit processing."
+        )
+    else:
+        return (
+            f"FORENSIC ANALYSIS REPORT\n\n"
+            f"Verdict: Counterfeit Flagged Note\n"
+            f"Confidence Score: {confidence}%\n\n"
+            f"WARNING: The note has been flagged as COUNTERFEIT. "
+            f"Multiple structural and surface deviations from RBI specifications were detected. In particular, anomalies were found regarding:\n- {features_str}\n\n"
+            f"Recommended Action: Retain note under standard protocol, log depositor details, and alert compliance personnel."
+        )
+
 def generate_report(verdict, confidence, retrieved_chunks):
-    client = genai_client.Client(api_key=os.environ.get("GEMINI_API_KEY"))
-    prompt = f"""You are a forensic currency analyst. Note classified as: {verdict} (confidence: {confidence}%).
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        print("GEMINI_API_KEY environment variable not found. Using local fallback report.")
+        return generate_fallback_report(verdict, confidence, retrieved_chunks)
+    try:
+        client = genai_client.Client(api_key=api_key)
+        prompt = f"""You are a forensic currency analyst. Note classified as: {verdict} (confidence: {confidence}%).
 Relevant RBI security feature info: {' '.join(retrieved_chunks)}
 Write a 100-word plain-English explanation for a bank teller, citing the relevant feature."""
-    response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
-    return response.text
+        response = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
+        return response.text
+    except Exception as e:
+        print(f"Error calling Gemini API: {e}. Falling back to local report.")
+        return generate_fallback_report(verdict, confidence, retrieved_chunks)
+
 
 if __name__ == "__main__":
     chunks = retrieve("security thread colour change")

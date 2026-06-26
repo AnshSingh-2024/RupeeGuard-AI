@@ -5,3 +5,4 @@ __pycache__/
 *.ipynb_checkpoints
 .venv/
 data_raw_backup/
+server.log
