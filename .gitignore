@@ -1,0 +1,7 @@
+data/
+models/*.pt
+__pycache__/
+.env
+*.ipynb_checkpoints
+.venv/
+data_raw_backup/
