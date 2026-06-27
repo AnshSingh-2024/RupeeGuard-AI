@@ -6,3 +6,4 @@ __pycache__/
 data_raw_backup/
 server.log
 models/*.pt
+outputs/*.png
