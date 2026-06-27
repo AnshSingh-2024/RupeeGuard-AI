@@ -17,9 +17,15 @@ from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
+from huggingface_hub import hf_hub_download
 device = torch.device('cpu')
+model_path = hf_hub_download(
+    repo_id="Anshsactivity/rupeeguard-fusion-model",
+    filename="fusion_model.pt"
+)
+
 model = RupeeGuardFusion()
-model.load_state_dict(torch.load("models/fusion_model.pt", map_location=device))
+model.load_state_dict(torch.load(model_path, map_location=device))
 model.eval()
 
 transform = transforms.Compose([
