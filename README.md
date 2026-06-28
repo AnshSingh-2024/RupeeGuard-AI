@@ -2,7 +2,6 @@
 
 [![Hugging Face Space](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Space-blue?style=for-the-badge)](https://huggingface.co/spaces/Anshsactivity/rupeeguard-ai)
 [![Deployment](https://img.shields.io/badge/Deployed%20on-Hugging%20Face%20Spaces%20(Docker%20SDK)-orange?style=for-the-badge&logo=huggingface)](https://huggingface.co/spaces/Anshsactivity/rupeeguard-ai)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 An end-to-end system that detects counterfeit Indian currency notes using classical machine learning, deep learning (CNN + Vision Transformer fusion), explainable AI, and a RAG-powered LLM explanation layer, deployed as a full-stack web application.
 
@@ -18,7 +17,6 @@ An end-to-end system that detects counterfeit Indian currency notes using classi
 9. [Deployment](#deployment)
 10. [Honest Limitations](#honest-limitations)
 11. [Future Work](#future-work)
-12. [License](#license)
 
 ---
 
@@ -174,7 +172,3 @@ Model checkpoints are stored on the Hugging Face Hub and downloaded dynamically 
 * **Photography Bias Mitigation**: Introduce data augmentation to mitigate dataset collection styles (such as hand-held notes vs. document-scanner style alignments).
 * **GPU Deployment**: Migrate hosting to GPU-backed nodes to reduce inference times.
 
----
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
